@@ -10,6 +10,7 @@ import android.widget.SeekBar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.content.ContextCompat;
 
 import org.json.JSONObject;
 
@@ -121,7 +122,7 @@ public class PlantWater extends ACryptoDevice{
             @Override
             public void onSuccess(Content response) {
                 new Handler(Looper.getMainLooper()).post(() -> {
-                    titleText.setTextColor(context.getResources().getColor(R.color.colorAccent));
+                    titleText.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
                     boolean state = false;
                     CONTROLL_MODE mode = CONTROLL_MODE.MANUAL;
                     double water_lvl = 0;
@@ -146,7 +147,7 @@ public class PlantWater extends ACryptoDevice{
             @Override
             public void onFail() {
                 new Handler(Looper.getMainLooper()).post(() -> {
-                    titleText.setTextColor(context.getResources().getColor(R.color.colorRed));
+                    titleText.setTextColor(ContextCompat.getColor(context, R.color.colorRed));
                 });
             }
 

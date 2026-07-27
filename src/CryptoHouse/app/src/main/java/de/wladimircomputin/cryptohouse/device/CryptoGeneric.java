@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.core.content.ContextCompat;
+
 import de.wladimircomputin.cryptohouse.R;
 import de.wladimircomputin.cryptohouse.devicemanager.DeviceManagerDevice;
 import de.wladimircomputin.libcryptoiot.v2.protocol.Content;
@@ -69,14 +71,14 @@ public class CryptoGeneric extends ACryptoDevice{
             @Override
             public void onSuccess(Content response) {
                 new Handler(Looper.getMainLooper()).post(() -> {
-                    titleText.setTextColor(context.getResources().getColor(R.color.colorAccent));
+                    titleText.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
                 });
             }
 
             @Override
             public void onFail() {
                 new Handler(Looper.getMainLooper()).post(() -> {
-                    titleText.setTextColor(context.getResources().getColor(R.color.colorRed));
+                    titleText.setTextColor(ContextCompat.getColor(context, R.color.colorRed));
                 });
             }
 

@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.content.ContextCompat;
 
 import com.github.shchurov.horizontalwheelview.HorizontalWheelView;
 
@@ -482,7 +483,7 @@ public class CryptoAC extends ACryptoDevice{
             @Override
             public void onSuccess(Content response) {
                 new Handler(Looper.getMainLooper()).post(() -> {
-                    titleText.setTextColor(context.getResources().getColor(R.color.colorAccent));
+                    titleText.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
                     try {
                         JSONObject jsonObject = new JSONObject(response.data);
                         current_state = jsonObject.getInt("state") == 1;
@@ -537,7 +538,7 @@ public class CryptoAC extends ACryptoDevice{
 
             @Override
             public void onFail() {
-                new Handler(Looper.getMainLooper()).post(() -> titleText.setTextColor(context.getResources().getColor(R.color.colorRed)));
+                new Handler(Looper.getMainLooper()).post(() -> titleText.setTextColor(ContextCompat.getColor(context, R.color.colorRed)));
             }
 
             @Override

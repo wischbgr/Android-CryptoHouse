@@ -3,6 +3,7 @@ package de.wladimircomputin.cryptohouse.assistant;
 import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ProgressBar;
 
@@ -74,7 +75,7 @@ public class AssistantActivity extends AppCompatActivity {
 
     public void setProgessAnimateDelayed(ProgressBar pb, int progress, int delay){
         runOnUiThread(() -> {
-            new Handler().postDelayed(() -> {
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
                 setProgressAnimate(pb,progress);
             }, delay);
         });

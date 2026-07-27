@@ -14,6 +14,7 @@ import android.view.inputmethod.InputMethodManager;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 
 import org.json.JSONArray;
@@ -50,7 +51,6 @@ public class ProfileFragment extends Fragment {
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         sharedPrefs = getContext().getSharedPreferences("de.wladimircomputin.cryptohouse.profiles", Context.MODE_PRIVATE);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.edit_profile);
-        setHasOptionsMenu(true);
         binding.profileFragmentName.setText(profileItem.name);
         binding.profileFragmentDelete.setVisibility(View.VISIBLE);
         binding.profileFragmentDelete.setOnClickListener((v) -> {
@@ -58,18 +58,39 @@ public class ProfileFragment extends Fragment {
                 .setTitle(R.string.delete_profile)
                 .setMessage(R.string.delete_profile_question)
                 .setIcon(android.R.drawable.ic_dialog_alert)
-                .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> {
+                .setPositiveButton(R.string.yes, (dialog, whichButton) -> {
                     MainActivity activity = (MainActivity) getActivity();
                     deleteProfile();
                     activity.loadProfiles();
                     activity.switchProfile(activity.getCurrentProfile());
                     activity.switchFragment(R.id.nav_devicecontrols);
                 })
-                .setNegativeButton(android.R.string.no, null).show();
+                .setNegativeButton(R.string.no, null).show();
         });
 
 
         return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        requireActivity().addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menu.clear();
+                menuInflater.inflate(R.menu.options_profile, menu);
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                if (menuItem.getItemId() == R.id.menu_apply) {
+                    apply();
+                    return true;
+                }
+                return false;
+            }
+        }, getViewLifecycleOwner());
     }
 
     public void deleteProfile(){
@@ -119,28 +140,6 @@ public class ProfileFragment extends Fragment {
                     .putString("current_profile", profileItem.id)
                     .apply();
         } catch (Exception x){}
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.clear();
-        inflater.inflate(R.menu.options_profile, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            // action with ID action_refresh was selected
-
-            case R.id.menu_apply:
-                apply();
-                break;
-
-            default:
-                break;
-        }
-        return true;
     }
 
     public void apply(){

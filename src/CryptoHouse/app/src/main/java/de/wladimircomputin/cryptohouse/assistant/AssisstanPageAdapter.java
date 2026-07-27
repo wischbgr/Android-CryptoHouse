@@ -36,7 +36,7 @@ public class AssisstanPageAdapter extends FragmentStateAdapter implements PagerA
     public Fragment createFragment(int position) {
         Fragment f;
         try {
-            f = arr.get(position).newInstance();
+            f = arr.get(position).getDeclaredConstructor().newInstance();
         } catch (Exception x){
             f = new PlaceholderFragment();
         }

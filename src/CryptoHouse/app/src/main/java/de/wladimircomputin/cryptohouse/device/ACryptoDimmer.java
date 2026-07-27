@@ -6,6 +6,9 @@ import android.os.Looper;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SeekBar;
+import android.widget.TextView;
+
+import androidx.core.content.ContextCompat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,13 +30,43 @@ public abstract class ACryptoDimmer extends ACryptoDevice{
         super(device, context, layoutfile);
 
         seekBars = new ArrayList<>();
+        // each SeekBar sits in its own row, alongside a "<" and ">" jump-to-min/max button
         int num = ((ViewGroup)genericDeviceView).getChildCount();
         for(int i = 0; i < num; i++){
-            View v = ((ViewGroup) genericDeviceView).getChildAt(i);
-            if (v instanceof SeekBar){
-                SeekBar seekBar = (SeekBar) v;
-                seekBar.setTag("Dimmer" + (num == 1 ? "" : (i+1)));
-                seekBars.add(seekBar);
+            View row = ((ViewGroup) genericDeviceView).getChildAt(i);
+            if (!(row instanceof ViewGroup)) {
+                continue;
+            }
+            ViewGroup rowGroup = (ViewGroup) row;
+
+            SeekBar seekBar = null;
+            TextView minButton = null;
+            TextView maxButton = null;
+            for (int j = 0; j < rowGroup.getChildCount(); j++) {
+                View child = rowGroup.getChildAt(j);
+                if (child instanceof SeekBar) {
+                    seekBar = (SeekBar) child;
+                } else if (child instanceof TextView) {
+                    if (minButton == null) {
+                        minButton = (TextView) child;
+                    } else {
+                        maxButton = (TextView) child;
+                    }
+                }
+            }
+
+            if (seekBar == null) {
+                continue;
+            }
+            seekBar.setTag("Dimmer" + (num == 1 ? "" : (i+1)));
+            seekBars.add(seekBar);
+
+            SeekBar finalSeekBar = seekBar;
+            if (minButton != null) {
+                minButton.setOnClickListener(v -> jumpTo(finalSeekBar, 0));
+            }
+            if (maxButton != null) {
+                maxButton.setOnClickListener(v -> jumpTo(finalSeekBar, finalSeekBar.getMax()));
             }
         }
 
@@ -94,9 +127,10 @@ public abstract class ACryptoDimmer extends ACryptoDevice{
                 @Override
                 public void onSuccess(Content response, int i) {
                     new Handler(Looper.getMainLooper()).post(() -> {
-                        titleText.setTextColor(context.getResources().getColor(R.color.colorAccent));
+                        titleText.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
                         if (!toUpdate.get(i).isPressed()) {
                             toUpdate.get(i).setProgress((int) (1000 * Double.parseDouble(response.data)), true);
+                            toUpdate.get(i).jumpDrawablesToCurrentState();
                         }
                     });
                 }
@@ -104,7 +138,7 @@ public abstract class ACryptoDimmer extends ACryptoDevice{
                 @Override
                 public void onFail(int i) {
                     new Handler(Looper.getMainLooper()).post(() -> {
-                        titleText.setTextColor(context.getResources().getColor(R.color.colorRed));
+                        titleText.setTextColor(ContextCompat.getColor(context, R.color.colorRed));
                     });
                 }
 
@@ -119,6 +153,13 @@ public abstract class ACryptoDimmer extends ACryptoDevice{
                 }
             });
         }
+    }
+
+    private void jumpTo(SeekBar seekBar, int progress) {
+        seekBar.setProgress(progress, true);
+        seekBar.setPressed(false);
+        seekBar.jumpDrawablesToCurrentState();
+        dimfade(seekBar.getTag().toString(), (double) progress / 1000, 2000);
     }
 
     public void dimfade(String device, double val, int millis){

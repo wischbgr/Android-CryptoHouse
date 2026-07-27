@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.provider.OpenableColumns;
 import android.util.Base64;
 import android.view.LayoutInflater;
@@ -142,7 +143,7 @@ public class ImportFragment extends Fragment implements FocusListener {
     private void loadSettings(JSONObject settings){
         verifiedJsonSettings = settings;
         updateStatusText(0);
-        new Handler().postDelayed(() -> {
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
             getActivity().runOnUiThread(new Runnable(){
                 public void run() {
                     binding.importButton.setEnabled(true);

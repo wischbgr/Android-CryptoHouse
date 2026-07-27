@@ -8,6 +8,8 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -62,7 +64,7 @@ public class CryptoSML extends ACryptoDevice{
             @Override
             public void onSuccess(Content response) {
                 new Handler(Looper.getMainLooper()).post(() -> {
-                    titleText.setTextColor(context.getResources().getColor(R.color.colorAccent));
+                    titleText.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
                     try {
                         JSONArray jsonArray = new JSONArray(response.data);
                         for(int i = 0; i < jsonArray.length(); i++){
@@ -162,7 +164,7 @@ public class CryptoSML extends ACryptoDevice{
             @Override
             public void onFail() {
                 new Handler(Looper.getMainLooper()).post(() -> {
-                    titleText.setTextColor(context.getResources().getColor(R.color.colorRed));
+                    titleText.setTextColor(ContextCompat.getColor(context, R.color.colorRed));
                 });
             }
 

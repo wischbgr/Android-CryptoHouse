@@ -37,7 +37,7 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
     @Override
     public boolean onMove(@NonNull RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
         //return true; // Return false if different view types
-        mAdapter.onItemMove(viewHolder.getAdapterPosition(), target.getAdapterPosition());
+        mAdapter.onItemMove(viewHolder.getBindingAdapterPosition(), target.getBindingAdapterPosition());
         return true;
     }
 

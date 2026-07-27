@@ -4,6 +4,9 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.widget.SeekBar;
+import android.widget.TextView;
+
+import androidx.core.content.ContextCompat;
 
 import org.json.JSONObject;
 
@@ -34,6 +37,18 @@ public class CryptoRollo extends ACryptoDevice{
                 pos((double)seekBar.getProgress() / 100);
             }
         });
+
+        TextView minButton = rootview.findViewById(R.id.seekBarMinButton);
+        TextView maxButton = rootview.findViewById(R.id.seekBarMaxButton);
+        minButton.setOnClickListener(v -> jumpTo(0));
+        maxButton.setOnClickListener(v -> jumpTo(seekBar.getMax()));
+    }
+
+    private void jumpTo(int progress) {
+        seekBar.setProgress(progress, true);
+        seekBar.setPressed(false);
+        seekBar.jumpDrawablesToCurrentState();
+        pos((double) progress / 100);
     }
 
     @Override
@@ -43,7 +58,7 @@ public class CryptoRollo extends ACryptoDevice{
                 @Override
                 public void onSuccess(Content response) {
                     new Handler(Looper.getMainLooper()).post(() -> {
-                        titleText.setTextColor(context.getResources().getColor(R.color.colorAccent));
+                        titleText.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
                         double progress = 0;
                         try {
                             progress = new JSONObject(response.data).getDouble("pos");
@@ -51,6 +66,7 @@ public class CryptoRollo extends ACryptoDevice{
                         }
                         if (!seekBar.isPressed()) {
                             seekBar.setProgress((int) (progress * 100), true);
+                            seekBar.jumpDrawablesToCurrentState();
                         }
                     });
                 }
@@ -58,7 +74,7 @@ public class CryptoRollo extends ACryptoDevice{
                 @Override
                 public void onFail() {
                     new Handler(Looper.getMainLooper()).post(() -> {
-                        titleText.setTextColor(context.getResources().getColor(R.color.colorRed));
+                        titleText.setTextColor(ContextCompat.getColor(context, R.color.colorRed));
                     });
                 }
 

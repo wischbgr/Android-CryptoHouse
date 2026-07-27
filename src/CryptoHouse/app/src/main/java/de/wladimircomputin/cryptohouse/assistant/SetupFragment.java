@@ -59,7 +59,7 @@ public class SetupFragment extends Fragment implements FocusListener {
         binding = FragmentAssistantSetupBinding.inflate(inflater, container, false);
 
         cc = new CryptCon(devicepass_factory_default, ap_ip_default);
-        new Handler().postDelayed(() -> {cc.sendMessageEncrypted(command_discover, new CryptConReceiver() {
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {cc.sendMessageEncrypted(command_discover, new CryptConReceiver() {
             @Override
             public void onSuccess(Content response) {
                 new Handler(Looper.getMainLooper()).post(() -> {
@@ -76,10 +76,10 @@ public class SetupFragment extends Fragment implements FocusListener {
                     animate.setInterpolator(new DecelerateInterpolator());
                     if (Arrays.asList(devicetypes).contains(device.type)) {
                         binding.assistantDevicetypeImage.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_baseline_check_24));
-                        binding.assistantDevicetypeImage.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
+                        binding.assistantDevicetypeImage.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.colorAccent)));
                     } else {
                         binding.assistantDevicetypeImage.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.baseline_question_mark_24));
-                        binding.assistantDevicetypeImage.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.design_default_color_error)));
+                        binding.assistantDevicetypeImage.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.design_default_color_error)));
                     }
                     binding.assistantDevicetypeImage.startAnimation(animate);
                 });

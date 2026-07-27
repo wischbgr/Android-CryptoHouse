@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,7 +65,7 @@ public class FinishFragment extends Fragment implements FocusListener {
 
     public void finishAssistant(){
         binding.assistantFinishProgress.setVisibility(View.VISIBLE);
-        (new Handler()).postDelayed(() -> {
+        (new Handler(Looper.getMainLooper())).postDelayed(() -> {
             DeviceSetupPack pack = ((AssistantActivity)getActivity()).pack;
             DeviceManagerDevice device = new DeviceManagerDevice(UUID.randomUUID().toString(), pack.hostname, pack.type, pack.hostname, "127.0.0.1", pack.mac, pack.devicepass, true, "");
             SharedPreferences sharedPrefs = getContext().getSharedPreferences("de.wladimircomputin.cryptohouse.profiles", Context.MODE_PRIVATE);

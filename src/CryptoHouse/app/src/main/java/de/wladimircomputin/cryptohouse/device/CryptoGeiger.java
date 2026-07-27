@@ -7,6 +7,7 @@ import android.os.Looper;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.content.ContextCompat;
 
 import org.json.JSONObject;
 
@@ -50,7 +51,7 @@ public class CryptoGeiger extends ACryptoDevice{
             @Override
             public void onSuccess(Content response) {
                 new Handler(Looper.getMainLooper()).post(() -> {
-                    titleText.setTextColor(context.getResources().getColor(R.color.colorAccent));
+                    titleText.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
                     try {
                         JSONObject jsonObject = new JSONObject(response.data);
                         int new_cpm = Integer.parseInt(jsonObject.getString("cpm_accurate"));
@@ -76,7 +77,7 @@ public class CryptoGeiger extends ACryptoDevice{
             @Override
             public void onFail() {
                 new Handler(Looper.getMainLooper()).post(() -> {
-                    titleText.setTextColor(context.getResources().getColor(R.color.colorRed));
+                    titleText.setTextColor(ContextCompat.getColor(context, R.color.colorRed));
                 });
             }
 

@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -53,7 +54,6 @@ public class DeviceManagerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = FragmentDevicemanagerBinding.inflate(inflater, container, false);
-        setHasOptionsMenu(true);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.device_manager);
 
         MainActivity mainActivity = (MainActivity)getActivity();
@@ -113,6 +113,32 @@ public class DeviceManagerFragment extends Fragment {
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(listAdapter);
         mItemTouchHelper = new ItemTouchHelper(callback);
         mItemTouchHelper.attachToRecyclerView(binding.devicesRecycler);
+
+        requireActivity().addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menu.clear();
+                menuInflater.inflate(R.menu.options_devicemanager, menu);
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                if (menuItem.getItemId() == R.id.menu_apply) {
+                    apply();
+                    return true;
+                } else if (menuItem.getItemId() == R.id.menu_add_device) {
+                    add_device();
+                    return true;
+                } else if (menuItem.getItemId() == R.id.menu_add_divider) {
+                    add_divider();
+                    return true;
+                } else if (menuItem.getItemId() == R.id.menu_scan) {
+                    scan();
+                    return true;
+                }
+                return false;
+            }
+        }, getViewLifecycleOwner());
     }
 
     private void apply(){
@@ -169,11 +195,11 @@ public class DeviceManagerFragment extends Fragment {
         listAdapter.list.add(position, device);
         listAdapter.notifyItemInserted(position);
         if(position==0){
-            new Handler().postDelayed(() -> {
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
                 binding.devicesRecycler.smoothScrollToPosition(0);
             }, 500);
         } else if (position == layoutManager.getItemCount() - 1){
-            new Handler().postDelayed(() -> {
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
                 binding.devicesRecycler.smoothScrollToPosition(listAdapter.list.size() - 1);
             }, 500);
         }
@@ -229,39 +255,5 @@ public class DeviceManagerFragment extends Fragment {
 
             }
         });
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.clear();
-        inflater.inflate(R.menu.options_devicemanager, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            // action with ID action_refresh was selected
-
-            case R.id.menu_apply:
-                apply();
-                break;
-
-            case R.id.menu_add_device:
-                add_device();
-                break;
-
-            case R.id.menu_add_divider:
-                add_divider();
-                break;
-
-            case R.id.menu_scan:
-                scan();
-                break;
-
-            default:
-                break;
-        }
-        return true;
     }
 }

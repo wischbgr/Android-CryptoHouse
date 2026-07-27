@@ -95,7 +95,7 @@ public class DeviceSettingsActivity extends AppCompatActivity {
             // action with ID action_refresh was selected
 
             case android.R.id.home:
-                onBackPressed();
+                finish();
                 break;
 
             case R.id.menu_terminal_v1:
@@ -114,11 +114,6 @@ public class DeviceSettingsActivity extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-
-    }
 
     public void terminal_v1(){
         Intent intent = new Intent(this, TerminalActivity_V1.class);

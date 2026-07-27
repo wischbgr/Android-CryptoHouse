@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.Looper;
 
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.content.ContextCompat;
 
 import org.json.JSONObject;
 
@@ -39,7 +40,7 @@ public class LightSwitch extends ACryptoDevice{
             public void onSuccess(Content response) {
                 new Handler(Looper.getMainLooper()).post(() -> {
                     try {
-                        titleText.setTextColor(context.getResources().getColor(R.color.colorAccent));
+                        titleText.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
                         JSONObject jsonObject = new JSONObject(response.data);
                         sw0.setChecked(jsonObject.getInt("0") == 1);
                         sw1.setChecked(jsonObject.getInt("1") == 1);
@@ -52,7 +53,7 @@ public class LightSwitch extends ACryptoDevice{
             @Override
             public void onFail() {
                 new Handler(Looper.getMainLooper()).post(() -> {
-                    titleText.setTextColor(context.getResources().getColor(R.color.colorRed));
+                    titleText.setTextColor(ContextCompat.getColor(context, R.color.colorRed));
                 });
             }
 

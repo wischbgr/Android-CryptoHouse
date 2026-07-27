@@ -446,10 +446,6 @@ public class GeneralFragment extends Fragment implements FocusListener, GeneralS
                 }
 
                 @Override
-                public void onStatusChanged(String provider, int status, Bundle extras) {
-                }
-
-                @Override
                 public void onProviderEnabled(String provider) {
                 }
 

@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 
 import com.ncorti.slidetoact.SlideToActView;
 
@@ -208,7 +209,7 @@ public class DoorLock extends ACryptoDevice{
                 new Handler(Looper.getMainLooper()).post(() -> {
                     try{
                         JSONObject jsonObject = new JSONObject(response.data);
-                        titleText.setTextColor(context.getResources().getColor(R.color.colorAccent));
+                        titleText.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
                         DoorLock.LockState lockState = DoorLock.LockState.fromInt(jsonObject.getInt("LockState"));
                         if(jsonObject.getInt("BatteryState") == 1){
                             BatteryImageView.setVisibility(View.VISIBLE);
@@ -241,7 +242,7 @@ public class DoorLock extends ACryptoDevice{
             public void onFail() {
                 new Handler(Looper.getMainLooper()).post(() -> {
                     statusImageView.setImageDrawable(context.getDrawable(LockState.UNKNOWN.getIcon()));
-                    titleText.setTextColor(context.getResources().getColor(R.color.colorRed));
+                    titleText.setTextColor(ContextCompat.getColor(context, R.color.colorRed));
                 });
                 currentLockState = LockState.UNKNOWN;
             }

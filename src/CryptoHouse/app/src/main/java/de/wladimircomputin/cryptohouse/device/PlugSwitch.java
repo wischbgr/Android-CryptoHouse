@@ -10,6 +10,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.content.ContextCompat;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -63,7 +64,7 @@ public class PlugSwitch extends ACryptoDevice{
                 switch (i) {
                     case 0:
                         new Handler(Looper.getMainLooper()).post(() -> {
-                            titleText.setTextColor(context.getResources().getColor(R.color.colorAccent));
+                            titleText.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
                             sw.setChecked(response.data.equals("1"));
                         });
                     break;
@@ -91,7 +92,7 @@ public class PlugSwitch extends ACryptoDevice{
                 switch (i) {
                     case 0:
                         new Handler(Looper.getMainLooper()).post(() -> {
-                            titleText.setTextColor(context.getResources().getColor(R.color.colorRed));
+                            titleText.setTextColor(ContextCompat.getColor(context, R.color.colorRed));
                         });
                     break;
                     default:

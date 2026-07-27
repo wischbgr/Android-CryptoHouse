@@ -15,6 +15,7 @@ import android.view.SubMenu;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
@@ -98,6 +99,19 @@ public class MainActivity extends AppCompatActivity {
 
         setupDrawerContent(nvDrawer);
         switchFragment(R.id.nav_devicecontrols);
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (mDrawer.isDrawerOpen(GravityCompat.START)) {
+                    mDrawer.closeDrawer(GravityCompat.START);
+                } else if (currentFragment == R.id.nav_devicecontrols) {
+                    finishAndRemoveTask();
+                } else {
+                    switchFragment(R.id.nav_devicecontrols);
+                }
+            }
+        });
 
         Intent intent = getIntent();
         if (Intent.ACTION_SEND.equals(intent.getAction()) && intent.getType() != null) {
@@ -277,16 +291,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        if(currentFragment == R.id.nav_devicecontrols) {
-            finishAndRemoveTask();
-        } else {
-            switchFragment(R.id.nav_devicecontrols);
-        }
-    }
-
-    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
         if (drawerToggle.onOptionsItemSelected(item)) {
@@ -356,7 +360,7 @@ public class MainActivity extends AppCompatActivity {
                     getString(R.string.about_source);
             AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
             SpannableString message = new SpannableString(about);
-            Linkify.addLinks(message, Linkify.ALL);
+            Linkify.addLinks(message, Linkify.WEB_URLS | Linkify.EMAIL_ADDRESSES | Linkify.PHONE_NUMBERS);
             builder1.setMessage(message);
             builder1.setCancelable(true);
             builder1.setTitle("CryptoHouse " + version);

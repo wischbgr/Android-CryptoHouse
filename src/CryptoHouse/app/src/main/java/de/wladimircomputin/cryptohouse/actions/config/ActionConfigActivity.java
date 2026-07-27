@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -142,7 +143,7 @@ public class ActionConfigActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             // action with ID action_refresh was selected
             case android.R.id.home:
-                onBackPressed();
+                finish();
                 break;
 
             case R.id.menu_apply:
@@ -154,11 +155,6 @@ public class ActionConfigActivity extends AppCompatActivity {
                 break;
         }
         return true;
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
     }
 
     private void add() {
@@ -176,11 +172,11 @@ public class ActionConfigActivity extends AppCompatActivity {
         actionDeviceItemRecyclerListAdapter.list.add(position, new ActionDeviceItem("0", null, new String[]{""}));
         actionDeviceItemRecyclerListAdapter.notifyItemInserted(position);
         if(position==0){
-            new Handler().postDelayed(() -> {
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
                 binding.actionConfigRecycleview.smoothScrollToPosition(0);
             }, 500);
         } else if (position == layoutManager.getItemCount() - 1){
-            new Handler().postDelayed(() -> {
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
                 binding.actionConfigRecycleview.smoothScrollToPosition(actionDeviceItemRecyclerListAdapter.list.size() - 1);
             }, 500);
         }

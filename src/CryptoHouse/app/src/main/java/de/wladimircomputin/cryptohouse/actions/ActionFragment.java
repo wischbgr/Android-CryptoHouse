@@ -11,7 +11,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -53,7 +55,6 @@ public class ActionFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = FragmentActionsBinding.inflate(inflater, container, false);
-        setHasOptionsMenu(true);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.actions);
 
         current_profile = ((MainActivity)getActivity()).getCurrentProfile().id;
@@ -212,28 +213,27 @@ public class ActionFragment extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.clear();
-        inflater.inflate(R.menu.options_actions, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        requireActivity().addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menu.clear();
+                menuInflater.inflate(R.menu.options_actions, menu);
+            }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-
-            case R.id.menu_apply:
-                apply();
-                break;
-
-            case R.id.menu_add:
-                add();
-                break;
-
-            default:
-                break;
-        }
-        return true;
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                if (menuItem.getItemId() == R.id.menu_apply) {
+                    apply();
+                    return true;
+                } else if (menuItem.getItemId() == R.id.menu_add) {
+                    add();
+                    return true;
+                }
+                return false;
+            }
+        }, getViewLifecycleOwner());
     }
 
     public void apply(){
