@@ -14,7 +14,8 @@ public class DeviceEventHolder extends RecyclerView.ViewHolder implements ItemTo
     public final Button deleteButton;
     public final Button cloneButton;
     public final AutoCompleteTextView deviceEventsEventEdittext;
-    public final AutoCompleteTextView deviceEventsCommandEdittext;
+    public final RecyclerView commandsRecycleview;
+    public final Button addButton;
 
 
     public DeviceEventHolder(View itemView) {
@@ -22,7 +23,8 @@ public class DeviceEventHolder extends RecyclerView.ViewHolder implements ItemTo
         deleteButton = itemView.findViewById(R.id.delete_button);
         cloneButton = itemView.findViewById(R.id.clone_button);
         deviceEventsEventEdittext = itemView.findViewById(R.id.device_events_event_edittext);
-        deviceEventsCommandEdittext = itemView.findViewById(R.id.device_events_command_edittext);
+        commandsRecycleview = itemView.findViewById(R.id.commands_recycleview);
+        addButton = itemView.findViewById(R.id.add_button);
     }
 
     @Override

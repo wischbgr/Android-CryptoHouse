@@ -30,6 +30,7 @@ import java.util.TimerTask;
 import de.wladimircomputin.cryptohouse.MainActivity;
 import de.wladimircomputin.cryptohouse.assistant.FocusListener;
 import de.wladimircomputin.cryptohouse.databinding.FragmentDevicecontrolsBinding;
+import de.wladimircomputin.cryptohouse.device.CIoTBell;
 import de.wladimircomputin.cryptohouse.device.CryptoAC;
 import de.wladimircomputin.cryptohouse.device.CryptoAC_TCL;
 import de.wladimircomputin.cryptohouse.device.CryptoDimmer;
@@ -153,6 +154,9 @@ public class DeviceControlsFragment extends Fragment {
                         break;
                     case "LightSwitch":
                         device1 = new LightSwitch(device, getContext());
+                        break;
+                    case "CIoTBell":
+                        device1 = new CIoTBell(device, getContext());
                         break;
                     case "divider":
                         break;
@@ -295,7 +299,7 @@ public class DeviceControlsFragment extends Fragment {
             public void run() {
                 autoUpdateIPs();
             }
-        }, 2000);
+        }, after);
     }
 
     private void detachUpdateHandler(){

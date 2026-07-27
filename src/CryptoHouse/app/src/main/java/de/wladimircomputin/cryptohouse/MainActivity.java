@@ -7,6 +7,7 @@ import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.SpannableString;
+import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onCreate(null);
         setContentView(R.layout.activity_main);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -277,6 +278,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        super.onBackPressed();
         if(currentFragment == R.id.nav_devicecontrols) {
             finishAndRemoveTask();
         } else {
@@ -358,7 +360,11 @@ public class MainActivity extends AppCompatActivity {
             builder1.setMessage(message);
             builder1.setCancelable(true);
             builder1.setTitle("CryptoHouse " + version);
-            builder1.show();
+            AlertDialog aboutDialog = builder1.show();
+            TextView messageView = aboutDialog.findViewById(android.R.id.message);
+            if (messageView != null) {
+                messageView.setMovementMethod(LinkMovementMethod.getInstance());
+            }
             return;
         } else {
             fragment = new DeviceControlsFragment();

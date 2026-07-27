@@ -76,18 +76,22 @@
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/commands_recycleview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/command">
+        android:layout_height="match_parent"/>
+    <Button
+        android:id="@+id/add_button"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="center"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="5dp"
+        android:background="@android:drawable/ic_input_add"
+        android:backgroundTintMode="multiply" />
 
-        <com.google.android.material.textfield.MaterialAutoCompleteTextView
-            android:id="@+id/device_events_command_edittext"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableEnd="@drawable/ic_baseline_arrow_drop_down_24"
-            android:inputType="textPersonName"
-            android:typeface="monospace" />
-    </com.google.android.material.textfield.TextInputLayout>
 
 </LinearLayout>

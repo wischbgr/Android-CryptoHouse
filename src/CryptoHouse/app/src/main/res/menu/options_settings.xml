@@ -16,19 +16,4 @@
         android:icon="@android:drawable/stat_notify_chat"
         android:title="@string/terminal_v1"
         app:showAsAction="never" />
-
-    <item
-        android:id="@+id/menu_reboot"
-        android:icon="@android:drawable/ic_menu_rotate"
-        android:title="@string/reboot"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/menu_update"
-        android:icon="@android:drawable/ic_menu_upload"
-        android:title="@string/update_mode"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/menu_reset"
-        android:icon="@android:drawable/ic_menu_delete"
-        android:title="@string/reset_settings" />
 </menu>

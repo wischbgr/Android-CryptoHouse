@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">CryptoHouse</string>
-    <string name="about_author">Code &amp; Design: David Wischnjak</string>
-    <string name="about_source">Source: https://github.com/wladimir-computin/Android-CryptoIoT-Android</string>
     <string name="vault">Speicher</string>
     <string name="assistant_label_1">Starte das CryptoIoT Gerät und drücke auf \"Verbinden\"</string>
     <string name="assistant_label_2">Standort (GPS) muss für WLAN-Scans aktiviert werden.\n\nStarte das CryptoIoT Gerät fünf mal in Folge neu um es auf Werkseinstellungen zurückzusetzen.</string>
@@ -126,4 +124,36 @@
     <string name="import_password_description">Bitte gib ein Passwort ein, um die Einstellungsdatei zu entschlüsseln.</string>
     <string name="device_events_hint">Keine Geräte Events vorhanden.\n\nHier klicken um eines zu erstellen.</string>
     <string name="device_event">Event</string>
+    <string name="start_update">Update starten</string>
+    <string name="update_success">Update erfolgreich, starte neu...</string>
+    <string name="firmware_version">Firmware Version</string>
+    <string name="version_not_supported">Firmware unterstützt keine Versionsinformationen</string>
+    <string name="open_web_updater">Web Updater öffnen</string>
+    <string name="update">Update</string>
+    <string name="web_updater">Web Updater</string>
+    <string name="arduino_ota_updater">ArduinoOTA</string>
+    <string name="general">Allgemein</string>
+    <string name="status_description">Aktuellen Gerätestatus anzeigen</string>
+    <string name="change_hostname_title">Hostname ändern</string>
+    <string name="change_hostname_description">Dieses Gerät im Netzwerk umbenennen</string>
+    <string name="hostname_changed">Hostname geändert</string>
+    <string name="hostname_change_failed">Hostname konnte nicht geändert werden</string>
+    <string name="change_device_password_title">Gerätepasswort ändern</string>
+    <string name="change_device_password_description">Das Passwort zur Absicherung dieses Geräts aktualisieren</string>
+    <string name="password_changed">Passwort geändert</string>
+    <string name="password_change_failed">Passwort konnte nicht geändert werden</string>
+    <string name="set_location_title">Standort festlegen</string>
+    <string name="set_location_description">Den geografischen Standort dieses Geräts festlegen</string>
+    <string name="use_current_location">Aktuellen Standort verwenden</string>
+    <string name="or_enter_address">Oder eine Adresse eingeben</string>
+    <string name="address">Adresse</string>
+    <string name="location_changed">Standort geändert</string>
+    <string name="location_change_failed">Standort konnte nicht geändert werden</string>
+    <string name="location_permission_denied">Standortberechtigung verweigert</string>
+    <string name="location_unavailable">Standort nicht verfügbar</string>
+    <string name="reboot_description">Das Gerät neu starten</string>
+    <string name="reboot_confirm_text">Das Gerät wird jetzt neugestartet.\n\nFortfahren?</string>
+    <string name="reset_factory_defaults_title">Werkseinstellungen zurücksetzen</string>
+    <string name="reset_factory_defaults_description">Alle Einstellungen löschen und das Gerät auf Werkseinstellungen zurücksetzen</string>
+    <string name="reset_factory_defaults_confirm_text">Dadurch werden alle Einstellungen gelöscht und das Gerät auf Werkseinstellungen zurückgesetzt. Dies kann nicht rückgängig gemacht werden.\n\nFortfahren?</string>
 </resources>

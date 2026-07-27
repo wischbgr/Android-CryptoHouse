@@ -2,6 +2,7 @@
 <resources>
     <string-array name="devicetypes">
         <item>CryptoGeneric</item>
+        <item>CIoTBell</item>
         <item>CryptoDimmer</item>
         <item>CryptoDimmer2</item>
         <item>CryptoDimmer4</item>

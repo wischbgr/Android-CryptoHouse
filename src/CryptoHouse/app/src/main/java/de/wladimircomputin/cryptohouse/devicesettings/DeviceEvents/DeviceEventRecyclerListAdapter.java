@@ -14,8 +14,10 @@ import android.widget.AutoCompleteTextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -23,6 +25,7 @@ import de.wladimircomputin.cryptohouse.R;
 import de.wladimircomputin.cryptohouse.actions.config.CommandAutoCompleteAdapter;
 import de.wladimircomputin.cryptohouse.boilerplate.ItemTouchHelperAdapter;
 import de.wladimircomputin.cryptohouse.boilerplate.OnStartDragListener;
+import de.wladimircomputin.cryptohouse.boilerplate.SimpleItemTouchHelperCallback;
 import de.wladimircomputin.libcryptoiot.v2.protocol.api.DeviceAPI;
 
 public class DeviceEventRecyclerListAdapter extends RecyclerView.Adapter<DeviceEventHolder> implements ItemTouchHelperAdapter {
@@ -51,6 +54,35 @@ public class DeviceEventRecyclerListAdapter extends RecyclerView.Adapter<DeviceE
 
     @Override
     public void onBindViewHolder(final DeviceEventHolder holder, int position) {
+        DeviceEventCommandRecyclerListAdapter deviceEventCommandRecyclerListAdapter = new DeviceEventCommandRecyclerListAdapter(viewHolder -> mItemTouchHelper.startDrag(viewHolder), new_commands -> {
+            list.get(holder.getBindingAdapterPosition()).commands = new_commands;
+            }, commandAutoCompleteAdapter, context);
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(deviceEventCommandRecyclerListAdapter);
+        mItemTouchHelper = new ItemTouchHelper(callback);
+        mItemTouchHelper.attachToRecyclerView(holder.commandsRecycleview);
+        holder.commandsRecycleview.setAdapter(deviceEventCommandRecyclerListAdapter);
+        holder.commandsRecycleview.setLayoutManager(new LinearLayoutManager(context));
+        deviceEventCommandRecyclerListAdapter.list.addAll(Arrays.asList(list.get(holder.getBindingAdapterPosition()).commands));
+        deviceEventCommandRecyclerListAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                super.onItemRangeInserted(positionStart, itemCount);
+                notifyItemChanged(-1);
+            }
+
+            @Override
+            public void onItemRangeRemoved(int positionStart, int itemCount) {
+                super.onItemRangeRemoved(positionStart, itemCount);
+                notifyItemChanged(-1);
+            }
+        });
+        deviceEventCommandRecyclerListAdapter.notifyDataSetChanged();
+
+        holder.addButton.setOnClickListener(v -> {
+            deviceEventCommandRecyclerListAdapter.list.add("");
+            deviceEventCommandRecyclerListAdapter.notifyItemInserted(deviceEventCommandRecyclerListAdapter.getItemCount());
+        });
+
         holder.deleteButton.setOnClickListener(v -> {
             onItemRemove(holder.getBindingAdapterPosition());
         });
@@ -75,45 +107,6 @@ public class DeviceEventRecyclerListAdapter extends RecyclerView.Adapter<DeviceE
                 list.get(holder.getBindingAdapterPosition()).event = editable.toString();
             }
         });
-
-
-
-        holder.deviceEventsCommandEdittext.setText(list.get(holder.getBindingAdapterPosition()).command);
-        holder.deviceEventsCommandEdittext.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                list.get(holder.getBindingAdapterPosition()).command = editable.toString();
-            }
-        });
-        holder.deviceEventsCommandEdittext.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                AutoCompleteTextView v = holder.deviceEventsCommandEdittext;
-                v.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        v.showDropDown();
-                    }
-                },100);
-                v.setText(v.getText().toString());
-                v.setSelection(v.getText().length());
-            }
-        });
-        holder.deviceEventsCommandEdittext.setOnClickListener((v) -> {
-            holder.deviceEventsCommandEdittext.showDropDown();
-        });
-        holder.deviceEventsCommandEdittext.setThreshold(0);
-        holder.deviceEventsCommandEdittext.setAdapter(commandAutoCompleteAdapter);
     }
 
     @Override

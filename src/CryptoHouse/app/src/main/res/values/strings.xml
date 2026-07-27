@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">CryptoHouse</string>
-    <string name="about_author">Code &amp; Design: David Wischnjak</string>
-    <string name="about_source">Source: https://github.com/wladimir-computin/Android-CryptoIoT-Android</string>
+    <string name="about_author" translatable="false">Code &amp; Design: David Wischnjak</string>
+    <string name="about_source" translatable="false">Source: https://github.com/wischbgr/Android-CryptoHouse</string>
     <string name="preference_devpass_key" translatable="false">devpass</string>
     <string name="preference_devpass_default" translatable="false">TestTest1</string>
     <string name="vault">Vault</string>
@@ -122,6 +122,7 @@
     <string name="pmem">Memory</string>
     <string name="time_events">Time Events</string>
     <string name="device_events">Device Events</string>
+    <string name="update">Update</string>
     <string name="time_events_hint">No Time Events yet.\n\nClick here to add one.</string>
     <string name="add_device">Device</string>
     <string name="add_divider">Divider</string>
@@ -131,4 +132,35 @@
     <string name="import_password_description">Please enter a password to decrypt the settings file.</string>
     <string name="device_events_hint">No Device Events yet.\n\nClick here to add one.</string>
     <string name="device_event">Event</string>
+    <string name="web_updater">Web Updater</string>
+    <string name="open_web_updater">Open Web Updater</string>
+    <string name="arduino_ota_updater">ArduinoOTA</string>
+    <string name="start_update">Start Update</string>
+    <string name="update_success">Update successful, rebooting...</string>
+    <string name="firmware_version">Firmware Version</string>
+    <string name="version_not_supported">Firmware does not support version information</string>
+    <string name="general">General</string>
+    <string name="status_description">Show the current device status</string>
+    <string name="change_hostname_title">Change hostname</string>
+    <string name="change_hostname_description">Rename this device on the network</string>
+    <string name="hostname_changed">Hostname changed</string>
+    <string name="hostname_change_failed">Failed to change hostname</string>
+    <string name="change_device_password_title">Change device password</string>
+    <string name="change_device_password_description">Update the password used to secure this device</string>
+    <string name="password_changed">Password changed</string>
+    <string name="password_change_failed">Failed to change password</string>
+    <string name="set_location_title">Set location</string>
+    <string name="set_location_description">Set the geographic location of this device</string>
+    <string name="use_current_location">Use current location</string>
+    <string name="or_enter_address">Or enter an address</string>
+    <string name="address">Address</string>
+    <string name="location_changed">Location changed</string>
+    <string name="location_change_failed">Failed to change location</string>
+    <string name="location_permission_denied">Location permission denied</string>
+    <string name="location_unavailable">Location unavailable</string>
+    <string name="reboot_description">Restart the device</string>
+    <string name="reboot_confirm_text">The device will restart now.\n\nContinue?</string>
+    <string name="reset_factory_defaults_title">Reset factory defaults</string>
+    <string name="reset_factory_defaults_description">Erase all settings and restore the device to its factory state</string>
+    <string name="reset_factory_defaults_confirm_text">This will erase all settings and restore the device to its factory state. This cannot be undone.\n\nContinue?</string>
 </resources>

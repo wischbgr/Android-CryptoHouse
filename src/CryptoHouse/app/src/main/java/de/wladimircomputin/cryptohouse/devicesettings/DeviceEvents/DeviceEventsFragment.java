@@ -186,7 +186,7 @@ public class DeviceEventsFragment extends Fragment implements FocusListener {
     }
 
     private void add() {
-        deviceEvents.add(new DeviceEvent("", ""));
+        deviceEvents.add(new DeviceEvent("", new String[]{""}));
         deviceEventRecyclerListAdapter.notifyItemInserted(deviceEvents.size()-1);
     }
 

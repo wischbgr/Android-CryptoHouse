@@ -1,9 +1,5 @@
 package de.wladimircomputin.cryptohouse.devicesettings;
 
-import static de.wladimircomputin.libcryptoiot.v2.Constants.command_reboot;
-import static de.wladimircomputin.libcryptoiot.v2.Constants.command_reset;
-import static de.wladimircomputin.libcryptoiot.v2.Constants.command_update;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,7 +7,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
@@ -24,9 +19,7 @@ import de.wladimircomputin.cryptohouse.databinding.ActivityDeviceSettingsBinding
 import de.wladimircomputin.cryptohouse.devicemanager.DeviceManagerDevice;
 import de.wladimircomputin.cryptohouse.devicesettings.Terminal.TerminalActivity_V1;
 import de.wladimircomputin.cryptohouse.ui.PagerAdapterTitleProvider;
-import de.wladimircomputin.libcryptoiot.v2.protocol.Content;
 import de.wladimircomputin.libcryptoiot.v2.protocol.CryptCon;
-import de.wladimircomputin.libcryptoiot.v2.protocol.CryptConReceiver;
 
 public class DeviceSettingsActivity extends AppCompatActivity {
     public SharedPreferences sharedPref;
@@ -109,18 +102,6 @@ public class DeviceSettingsActivity extends AppCompatActivity {
                 terminal_v1();
                 break;
 
-            case R.id.menu_reboot:
-                reboot();
-                break;
-
-            case R.id.menu_update:
-                update_mode();
-                break;
-
-            case R.id.menu_reset:
-                reset();
-                break;
-
             case R.id.menu_apply:
                 return false;
 
@@ -137,76 +118,6 @@ public class DeviceSettingsActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
 
-    }
-
-    private void reset(){
-        cc.sendMessageEncrypted(command_reset, CryptCon.Mode.UDP, new CryptConReceiver() {
-            @Override
-            public void onSuccess(Content response) {
-                //update();
-            }
-
-            @Override
-            public void onFail() {
-
-            }
-
-            @Override
-            public void onFinished() {
-
-            }
-
-            @Override
-            public void onProgress(String sprogress, int iprogress) {
-
-            }
-        });
-    }
-
-    private void update_mode(){
-        cc.sendMessageEncrypted(command_update, CryptCon.Mode.UDP, new CryptConReceiver() {
-            @Override
-            public void onSuccess(Content response) {
-                runOnUiThread(() -> {
-                    Toast.makeText(DeviceSettingsActivity.this, getString(R.string.update_server_enabled) + "\n" + response.data, Toast.LENGTH_LONG).show();
-                });
-            }
-
-            @Override
-            public void onFail() {
-
-            }
-
-            @Override
-            public void onFinished() {
-
-            }
-
-            @Override
-            public void onProgress(String sprogress, int iprogress) {
-
-            }
-        });
-    }
-
-    public void reboot(){
-        cc.sendMessageEncrypted(command_reboot, CryptCon.Mode.UDP, 1, new CryptConReceiver() {
-            @Override
-            public void onSuccess(Content response) {}
-
-            @Override
-            public void onFail() {}
-
-            @Override
-            public void onFinished() {
-                runOnUiThread(() -> {
-                    Toast.makeText(DeviceSettingsActivity.this, getString(R.string.rebooting), Toast.LENGTH_SHORT).show();
-                });
-            }
-
-            @Override
-            public void onProgress(String sprogress, int iprogress) {}
-        });
     }
 
     public void terminal_v1(){

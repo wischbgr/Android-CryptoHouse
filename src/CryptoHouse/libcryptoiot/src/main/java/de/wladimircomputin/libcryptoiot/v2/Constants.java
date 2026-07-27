@@ -27,6 +27,7 @@ public class Constants {
     public static final String command_wifiscan = "wifiscan";
     public static final String command_wifiresults = "wifiresults";
     public static final String command_update = "update";
+    public static final String command_version = "version";
     public static final String wifissid_factory_default = "CryptoIoT-Setup";
     public static final String wifipass_factory_default = "12345670";
     public static final String devicepass_factory_default = "TestTest1";

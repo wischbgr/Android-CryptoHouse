@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <Button
+        android:id="@+id/set_location_current_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/use_current_location" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:alpha="0.6"
+        android:text="@string/or_enter_address"
+        android:textSize="13sp" />
+
+    <AutoCompleteTextView
+        android:id="@+id/set_location_address_autocomplete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:completionThreshold="3"
+        android:hint="@string/address"
+        android:inputType="textPostalAddress" />
+
+    <TextView
+        android:id="@+id/set_location_coordinates_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/colorAccent"
+        android:textSize="13sp"
+        android:visibility="gone" />
+
+</LinearLayout>

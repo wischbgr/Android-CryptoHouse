@@ -90,4 +90,11 @@ public class DeviceControlsSubFragment extends Fragment implements FocusListener
     public void onUnselected() {
 
     }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        // Don't save state - parent will recreate us with fresh data
+        outState.clear();
+    }
 }

@@ -19,10 +19,12 @@ import android.widget.AutoCompleteTextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -30,6 +32,8 @@ import de.wladimircomputin.cryptohouse.R;
 import de.wladimircomputin.cryptohouse.actions.config.CommandAutoCompleteAdapter;
 import de.wladimircomputin.cryptohouse.boilerplate.ItemTouchHelperAdapter;
 import de.wladimircomputin.cryptohouse.boilerplate.OnStartDragListener;
+import de.wladimircomputin.cryptohouse.boilerplate.SimpleItemTouchHelperCallback;
+import de.wladimircomputin.cryptohouse.devicesettings.DeviceEvents.DeviceEventCommandRecyclerListAdapter;
 import de.wladimircomputin.libcryptoiot.v2.protocol.api.DeviceAPI;
 import de.wladimircomputin.libcryptoiot.v2.protocol.api.TimeEventType;
 
@@ -59,6 +63,35 @@ public class TimeEventRecyclerListAdapter extends RecyclerView.Adapter<TimeEvent
 
     @Override
     public void onBindViewHolder(final TimeEventHolder holder, int position) {
+        TimeEventCommandRecyclerListAdapter timeEventCommandRecyclerListAdapter = new TimeEventCommandRecyclerListAdapter(viewHolder -> mItemTouchHelper.startDrag(viewHolder), new_commands -> {
+            list.get(holder.getBindingAdapterPosition()).commands = new_commands;
+        }, commandAutoCompleteAdapter, context);
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(timeEventCommandRecyclerListAdapter);
+        mItemTouchHelper = new ItemTouchHelper(callback);
+        mItemTouchHelper.attachToRecyclerView(holder.commandsRecycleview);
+        holder.commandsRecycleview.setAdapter(timeEventCommandRecyclerListAdapter);
+        holder.commandsRecycleview.setLayoutManager(new LinearLayoutManager(context));
+        timeEventCommandRecyclerListAdapter.list.addAll(Arrays.asList(list.get(holder.getBindingAdapterPosition()).commands));
+        timeEventCommandRecyclerListAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                super.onItemRangeInserted(positionStart, itemCount);
+                notifyItemChanged(-1);
+            }
+
+            @Override
+            public void onItemRangeRemoved(int positionStart, int itemCount) {
+                super.onItemRangeRemoved(positionStart, itemCount);
+                notifyItemChanged(-1);
+            }
+        });
+        timeEventCommandRecyclerListAdapter.notifyDataSetChanged();
+
+        holder.addButton.setOnClickListener(v -> {
+            timeEventCommandRecyclerListAdapter.list.add("");
+            timeEventCommandRecyclerListAdapter.notifyItemInserted(timeEventCommandRecyclerListAdapter.getItemCount());
+        });
+
         holder.deleteButton.setOnClickListener(v -> {
             onItemRemove(holder.getBindingAdapterPosition());
         });
@@ -68,7 +101,7 @@ public class TimeEventRecyclerListAdapter extends RecyclerView.Adapter<TimeEvent
 
         ArrayAdapter<CharSequence> timeEventsSpinnerAdapter = (ArrayAdapter<CharSequence>) (holder.timeEventsSpinner.getAdapter());
         int selection = 0;
-        switch (list.get(holder.getBindingAdapterPosition()).timeEventType){
+        switch (list.get(holder.getBindingAdapterPosition()).timeEventType) {
             case DISABLED:
                 selection = timeEventsSpinnerAdapter.getPosition("DISABLED");
                 break;
@@ -89,7 +122,7 @@ public class TimeEventRecyclerListAdapter extends RecyclerView.Adapter<TimeEvent
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 list.get(holder.getBindingAdapterPosition()).timeEventType = TimeEventType.fromString(timeEventsSpinnerAdapter.getItem(i).toString());
-                if(list.get(holder.getBindingAdapterPosition()).timeEventType == TimeEventType.TIME){
+                if (list.get(holder.getBindingAdapterPosition()).timeEventType == TimeEventType.TIME) {
                     holder.timeEventsImage.setVisibility(View.INVISIBLE);
                     holder.timeEventsLabel.setAlpha(0f);
                     holder.timeEventsLabel.animate()
@@ -98,11 +131,11 @@ public class TimeEventRecyclerListAdapter extends RecyclerView.Adapter<TimeEvent
                             .setInterpolator(new DecelerateInterpolator());
                     holder.timeEventsLabel.setVisibility(View.VISIBLE);
                     String time = list.get(holder.getBindingAdapterPosition()).time;
-                    if(!time.isEmpty()) {
+                    if (!time.isEmpty()) {
                         LocalTime target = LocalTime.parse(time, DateTimeFormatter.ofPattern("HH:mm"));
                         ValueAnimator time_value_animator = ValueAnimator.ofInt(0, target.toSecondOfDay());
                         time_value_animator.addUpdateListener(valueAnimator -> {
-                            LocalTime temp = LocalTime.ofSecondOfDay((int)valueAnimator.getAnimatedValue());
+                            LocalTime temp = LocalTime.ofSecondOfDay((int) valueAnimator.getAnimatedValue());
                             holder.timeEventsLabel.setText(temp.format(DateTimeFormatter.ofPattern("HH:mm")));
                         });
                         time_value_animator.setDuration(500);
@@ -146,61 +179,24 @@ public class TimeEventRecyclerListAdapter extends RecyclerView.Adapter<TimeEvent
         holder.timeEventsLabel.setText(list.get(holder.getBindingAdapterPosition()).time);
 
         holder.timeEventsLabel.setOnClickListener(view -> {
-            if(list.get(holder.getBindingAdapterPosition()).timeEventType == TimeEventType.TIME){
+            if (list.get(holder.getBindingAdapterPosition()).timeEventType == TimeEventType.TIME) {
                 LocalTime old = LocalTime.parse(list.get(holder.getBindingAdapterPosition()).time, DateTimeFormatter.ofPattern("HH:mm"));
                 TimePickerDialog timePickerDialog = new TimePickerDialog(context,
-                    (TimePickerDialog.OnTimeSetListener) (view1, hourOfDay, minute) -> {
-                        LocalTime target = LocalTime.of(hourOfDay, minute);
-                        list.get(holder.getBindingAdapterPosition()).time = target.format(DateTimeFormatter.ofPattern("HH:mm"));
-                        ValueAnimator time_value_animator = ValueAnimator.ofInt(old.toSecondOfDay(), target.toSecondOfDay());
-                        time_value_animator.addUpdateListener(valueAnimator -> {
-                            LocalTime temp = LocalTime.ofSecondOfDay((int)valueAnimator.getAnimatedValue());
-                            holder.timeEventsLabel.setText(temp.format(DateTimeFormatter.ofPattern("HH:mm")));
-                        });
-                        time_value_animator.setDuration(500);
-                        time_value_animator.setInterpolator(new DecelerateInterpolator());
-                        time_value_animator.start();
-                    }, old.getHour(), old.getMinute(), true);
+                        (TimePickerDialog.OnTimeSetListener) (view1, hourOfDay, minute) -> {
+                            LocalTime target = LocalTime.of(hourOfDay, minute);
+                            list.get(holder.getBindingAdapterPosition()).time = target.format(DateTimeFormatter.ofPattern("HH:mm"));
+                            ValueAnimator time_value_animator = ValueAnimator.ofInt(old.toSecondOfDay(), target.toSecondOfDay());
+                            time_value_animator.addUpdateListener(valueAnimator -> {
+                                LocalTime temp = LocalTime.ofSecondOfDay((int) valueAnimator.getAnimatedValue());
+                                holder.timeEventsLabel.setText(temp.format(DateTimeFormatter.ofPattern("HH:mm")));
+                            });
+                            time_value_animator.setDuration(500);
+                            time_value_animator.setInterpolator(new DecelerateInterpolator());
+                            time_value_animator.start();
+                        }, old.getHour(), old.getMinute(), true);
                 timePickerDialog.show();
             }
         });
-
-        holder.timeEventsCommandEdittext.setText(list.get(holder.getBindingAdapterPosition()).command);
-        holder.timeEventsCommandEdittext.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                list.get(holder.getBindingAdapterPosition()).command = editable.toString();
-            }
-        });
-        holder.timeEventsCommandEdittext.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                AutoCompleteTextView v = holder.timeEventsCommandEdittext;
-                v.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        v.showDropDown();
-                    }
-                },100);
-                v.setText(v.getText().toString());
-                v.setSelection(v.getText().length());
-            }
-        });
-        holder.timeEventsCommandEdittext.setOnClickListener((v) -> {
-            holder.timeEventsCommandEdittext.showDropDown();
-        });
-        holder.timeEventsCommandEdittext.setThreshold(0);
-        holder.timeEventsCommandEdittext.setAdapter(commandAutoCompleteAdapter);
     }
 
     @Override

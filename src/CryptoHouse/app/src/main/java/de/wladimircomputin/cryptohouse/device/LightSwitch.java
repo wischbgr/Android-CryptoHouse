@@ -24,10 +24,11 @@ public class LightSwitch extends ACryptoDevice{
         sw1 = rootview.findViewById(R.id.lightswitch_switch1);
 
         sw0.setOnClickListener((view) -> {
-            touch(0);
+            setState(0, sw0.isChecked());
+
         });
         sw1.setOnClickListener((view) -> {
-            touch(1);
+            setState(1, sw1.isChecked());
         });
     }
 
@@ -65,24 +66,7 @@ public class LightSwitch extends ACryptoDevice{
 
     public void setState(int sw, boolean state){
         skipNextUpdate();
-        cc.sendMessageEncrypted("LightSwitch:state:" + sw + ":" + (state ? "1" : "0"), CryptCon.Mode.UDP, new CryptConReceiver() {
-            @Override
-            public void onSuccess(Content response) {}
-
-            @Override
-            public void onFail() {}
-
-            @Override
-            public void onFinished() {}
-
-            @Override
-            public void onProgress(String sprogress, int iprogress) {}
-        });
-    }
-
-    public void touch(int sw){
-        skipNextUpdate();
-        cc.sendMessageEncrypted("LightSwitch:touch:" + sw, CryptCon.Mode.UDP, new CryptConReceiver() {
+        cc.sendMessageEncrypted("LightSwitch:touch:" + sw + ":" + (state ? "1" : "0"), CryptCon.Mode.UDP, new CryptConReceiver() {
             @Override
             public void onSuccess(Content response) {}
 

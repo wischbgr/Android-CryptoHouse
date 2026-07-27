@@ -32,15 +32,6 @@ public class ActionDeviceItem {
         }
     }
 
-    public ActionDeviceItem(String json, CryptCon cc){
-        try {
-            JSONObject jsonobj = new JSONObject(json);
-            device_id = jsonobj.getString("device_id");
-            commands = toStringArray(jsonobj.optJSONArray("commands"));
-            this.cc = cc;
-        } catch (Exception x){}
-    }
-
     public JSONObject toJSON() throws JSONException {
         JSONObject out = new JSONObject();
         out.put("device_id", device_id);

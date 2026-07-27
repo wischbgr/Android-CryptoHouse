@@ -188,7 +188,7 @@ public class TimeEventsFragment extends Fragment implements FocusListener {
     }
 
     private void add() {
-        timeEvents.add(new TimeEvent(TimeEventType.TIME, "00:00", ""));
+        timeEvents.add(new TimeEvent(TimeEventType.TIME, "00:00", new String[1]));
         timeEventRecyclerListAdapter.notifyItemInserted(timeEvents.size()-1);
     }
 

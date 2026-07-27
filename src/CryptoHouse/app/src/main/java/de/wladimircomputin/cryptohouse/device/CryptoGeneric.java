@@ -11,6 +11,7 @@ import android.widget.Toast;
 import de.wladimircomputin.cryptohouse.R;
 import de.wladimircomputin.cryptohouse.devicemanager.DeviceManagerDevice;
 import de.wladimircomputin.libcryptoiot.v2.protocol.Content;
+import de.wladimircomputin.libcryptoiot.v2.protocol.CryptCon;
 import de.wladimircomputin.libcryptoiot.v2.protocol.CryptConReceiver;
 import de.wladimircomputin.libcryptoiot.v2.protocol.MessageType;
 
@@ -63,5 +64,27 @@ public class CryptoGeneric extends ACryptoDevice{
     }
 
     @Override
-    public void update() {}
+    public void update() {
+        cc.sendMessageEncrypted("ping", CryptCon.Mode.UDP, new CryptConReceiver() {
+            @Override
+            public void onSuccess(Content response) {
+                new Handler(Looper.getMainLooper()).post(() -> {
+                    titleText.setTextColor(context.getResources().getColor(R.color.colorAccent));
+                });
+            }
+
+            @Override
+            public void onFail() {
+                new Handler(Looper.getMainLooper()).post(() -> {
+                    titleText.setTextColor(context.getResources().getColor(R.color.colorRed));
+                });
+            }
+
+            @Override
+            public void onFinished() {}
+
+            @Override
+            public void onProgress(String sprogress, int iprogress) {}
+        });
+    }
 }

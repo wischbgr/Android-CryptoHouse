@@ -54,6 +54,45 @@ public class DoorLock extends ACryptoDevice{
         }
     }
 
+    public enum AutoRelock {
+
+        AUTO_RELOCK_DISABLED(0, "DOOR_STATUSPENDING", R.drawable.unknown),
+        AUTO_RELOCK_ENABLED(1, "DOOR_UNKNOWN", R.drawable.unknown),
+        AUTO_RELOCK_ENABLED_BY_PROG(2, "DOOR_MOVING", R.drawable.baseline_autorenew_24);
+
+        private int code;
+        private String value;
+        private int icon;
+
+        AutoRelock(int code, String value, int icon) {
+            this.code = code;
+            this.value = value;
+            this.icon = icon;
+        }
+
+        public static AutoRelock fromCode(int code){
+            for(AutoRelock d : AutoRelock.values()){
+                if (d.code == code){
+                    return d;
+                }
+            }
+            return AUTO_RELOCK_DISABLED;
+        }
+
+        @Override
+        public String toString() {
+            return value;
+        }
+
+        public int getIcon(){
+            return icon;
+        }
+
+        public int toCode(){
+            return code;
+        }
+    }
+
     Button lockButton;
     Button unlockButton;
     SlideToActView openSlide;

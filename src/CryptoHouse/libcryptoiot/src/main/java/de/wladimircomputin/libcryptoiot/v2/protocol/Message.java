@@ -82,7 +82,7 @@ public class Message {
 
     public Message decrypt_verify(Crypter crypter, ChallengeManager challengeManager){
         try {
-            if(encrypted_message.length >= 1 + 1 + FLAGS_LEN + 1 + CHALLENGE_LEN + CHALLENGE_LEN) {
+            if(encrypted_message != null && encrypted_message.length >= 1 + 1 + FLAGS_LEN + 1 + CHALLENGE_LEN + CHALLENGE_LEN) {
                 byte[] raw_message = crypter.decrypt(encrypted_message, iv, tag);
                 if (raw_message != null) {
                     ByteBuffer message = ByteBuffer.wrap(raw_message);
@@ -114,9 +114,7 @@ public class Message {
                     }
                 }
             }
-        } catch (Exception x) {
-            x.printStackTrace();
-        }
+        } catch (Exception x) {}
         return this;
     }
 

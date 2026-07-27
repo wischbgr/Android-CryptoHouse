@@ -19,7 +19,8 @@ public class TimeEventHolder extends RecyclerView.ViewHolder implements ItemTouc
     public final Spinner timeEventsSpinner;
     public final TextView timeEventsLabel;
     public final ImageView timeEventsImage;
-    public final AutoCompleteTextView timeEventsCommandEdittext;
+    public final RecyclerView commandsRecycleview;
+    public final Button addButton;
 
 
     public TimeEventHolder(View itemView) {
@@ -29,7 +30,8 @@ public class TimeEventHolder extends RecyclerView.ViewHolder implements ItemTouc
         cloneButton = itemView.findViewById(R.id.clone_button);
         timeEventsLabel = itemView.findViewById(R.id.time_events_label);
         timeEventsImage = itemView.findViewById(R.id.time_events_image);
-        timeEventsCommandEdittext = itemView.findViewById(R.id.time_events_command_edittext);
+        commandsRecycleview = itemView.findViewById(R.id.commands_recycleview);
+        addButton = itemView.findViewById(R.id.add_button);
     }
 
     @Override
